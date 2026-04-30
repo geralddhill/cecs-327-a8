@@ -187,20 +187,20 @@ def main():
     print("Socket is listening...")
     
 
+    incoming_socket, incoming_address = tcp_socket.accept()
+
+    print(f"Got connection from {incoming_address}")
+
     while True:
-
-        incoming_socket, incoming_address = tcp_socket.accept()
-
-        print(f"Got connection from {incoming_address}")
-
-
         data = incoming_socket.recv(MAX_BYTES_TO_RECIEVE)
 
         decode = int(data.decode('utf-8'))
 
         res = None
 
-        if decode == 1:
+        if decode == 0:
+            break
+        elif decode == 1:
             res = fetchMoisture()
         elif decode == 2:
             res = fetchWaterConsumption()
@@ -213,8 +213,10 @@ def main():
             incoming_socket.send(bytearray(str(res), encoding="utf-8"))
 
 
-        incoming_socket.close()
+    incoming_socket.close()
 
-        print("Server: Closing socket")
+    print("Server: Closing socket")
+
+    break
 
 main()

@@ -31,11 +31,12 @@ while someCondition:
     
     # user quit condition
     if userInput == 0:
+        myTCPSocket.send(bytearray(str(0), encoding='utf-8'))
         someCondition = False
         break
     
     # if valid query
-    if userInput >= 0 and userInput <= 3:
+    if userInput > 0 and userInput <= 3:
         myTCPSocket.send(bytearray(str(userInput), encoding='utf-8'))
         
         # receive and display server response
