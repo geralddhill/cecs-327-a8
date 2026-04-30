@@ -2,6 +2,7 @@ import socket
 
 # supported queries
 SUPPORTED_QUERIES = [
+    "Quit"
     "What is the average moisture inside our kitchen fridges in the past hours, week and month?",
     "What is the average water consumption per cycle across our smart dishwashers in the past hour, week and month?",
     "Which house consumed more electricity in the past 24 hours, and by how much?"
@@ -21,20 +22,20 @@ someCondition = True
 while someCondition:
     # show queries to user
     print("\nSupported queries:")
-    for i, query in enumerate(SUPPORTED_QUERIES, 1):
+    for i, query in enumerate(SUPPORTED_QUERIES):
         print(f"{i}. {query}")
     print("Enter 'q' to quit.\n")
     
     # user input
-    userInput = input("Enter your query: ").strip()
+    userInput = int(input("Enter your query: "))
     
     # user quit condition
-    if userInput.lower() == "q":
+    if userInput == 0:
         someCondition = False
         break
     
     # if valid query
-    if userInput in SUPPORTED_QUERIES:
+    if userInput >= 0 and userInput <= 3:
         myTCPSocket.send(bytearray(str(userInput), encoding='utf-8'))
         
         # receive and display server response
