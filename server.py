@@ -169,31 +169,52 @@ def fetchMoreElecConsumption():
 
 
 def main():
-    SERVER_ADDRESS = socket.gethostname()
+    SERVER_ADDRESS = "192.168.0.105"
     SERVER_PORT = 5000
 
 
-    tcp_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    tcp_socket.bind((SERVER_ADDRESS, SERVER_PORT))
-    tcp_socket.listen(5)
-    print("Waiting for connection")
-    incoming_socket, incoming_address = tcp_socket.accept()
 
+    tcp_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+
+    print("Socket successfully created.")
+
+    tcp_socket.bind((SERVER_ADDRESS, SERVER_PORT))
+
+    print(f"Socket binded to port {SERVER_PORT}.")
+
+    tcp_socket.listen(5)
+
+    print("Socket is listening...")
+    
 
     while True:
-        decode = ""
-        try:
-            while not decode:
-                data = incoming_socket.recv(MAX_BYTES_TO_RECIEVE)
-                decode = data.decode('utf-8')
-        except TimeoutError:
-            print("Client timed out.")
-            break
 
-        print("Client:", decode)
-        incoming_socket.send(bytearray(decode.upper(), encoding="utf-8"))
+        incoming_socket, incoming_address = tcp_socket.accept()
 
-    incoming_socket.close()
-    print("Server: Closing socket")
+        print(f"Got connection from {incoming_address}")
+
+
+        data = incoming_socket.recv(MAX_BYTES_TO_RECIEVE)
+
+        decode = int(data.decode('utf-8'))
+
+        res = None
+
+        if decode == 1:
+            res = fetchMoisture()
+        elif decode == 2:
+            res = fetchWaterConsumption()
+        elif decode == 3:
+            res = fetchMoreElecConsumption()
+
+        if res is None:
+            incoming_socket.send(bytearray("Error: Invalid input.", encoding="utf-8"))
+        else:
+            incoming_socket.send(bytearray(res, encoding="utf-8"))
+
+
+        incoming_socket.close()
+
+        print("Server: Closing socket")
 
 main()
