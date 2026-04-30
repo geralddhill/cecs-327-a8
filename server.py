@@ -170,7 +170,7 @@ def fetchMoreElecConsumption():
 
 def main():
     SERVER_ADDRESS = socket.gethostname()
-    SERVER_PORT = 12345
+    SERVER_PORT = 5000
 
 
     tcp_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
