@@ -217,6 +217,5 @@ def main():
 
     print("Server: Closing socket")
 
-    break
 
 main()
