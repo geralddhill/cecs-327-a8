@@ -210,7 +210,7 @@ def main():
         if res is None:
             incoming_socket.send(bytearray("Error: Invalid input.", encoding="utf-8"))
         else:
-            incoming_socket.send(bytearray(res, encoding="utf-8"))
+            incoming_socket.send(bytearray(str(res), encoding="utf-8"))
 
 
         incoming_socket.close()
